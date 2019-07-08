@@ -51,7 +51,7 @@ if __name__ == '__main__':
     import os
     from tqdm import tqdm
 
-    outpath = r"C:\Users\JSC7RNG\Downloads\vision\gan_experiments"
+    outpath = r"./gan_experiments"
     weight_dir = ""
     exp_name = "DCGAN"
     num_batches = 500
