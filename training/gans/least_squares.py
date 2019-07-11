@@ -7,7 +7,6 @@ import torch
 if __name__ == '__main__':
 
     img_path = "~/data/"
-    img_path = "C:/Users/JSC7RNG/Downloads/data"
     outpath = "~/GanExperiments"
     num_epochs = 1000
     key_mapping = {"imgs": "data"}
