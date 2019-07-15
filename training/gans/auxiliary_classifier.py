@@ -14,7 +14,7 @@ if __name__ == '__main__':
                                {"latent_dim": 100,
                                 "img_size": 28,
                                 "n_channels": 1,
-                                "n_classes": 1},
+                                "n_classes": 10},
                                os.path.join(outpath, "train"), img_path,
                                num_epochs=num_epochs,
                                additional_losses={

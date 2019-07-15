@@ -92,7 +92,23 @@ def train(model_cls, model_kwargs: dict, outpath: str, data_path, exp_name=None,
 
 def predict(model, weight_dir, outpath: str, num_epochs: int, exp_name=None,
             checkpoint_freq=10, batchsize=64, num_batches=100, latent_dim=100,
-            generative_network="generator"):
+            generative_network="generator", gen_fns=None,
+            gen_args=None, gen_kwargs=None):
+
+    if gen_fns is None:
+        gen_fns = [torch.randn]
+
+    if gen_args is None:
+        gen_args = [(batchsize, latent_dim)]
+
+    if gen_kwargs is not None:
+        overwrite_kwargs = gen_kwargs
+    else:
+        overwrite_kwargs = [{} for _ in gen_fns]
+
+    if exp_name is None:
+        exp_name = model.__class__.__name__
+
     pbar = tqdm(range(0, num_epochs, checkpoint_freq))
     processes = []
     for epoch in pbar:
@@ -107,6 +123,11 @@ def predict(model, weight_dir, outpath: str, num_epochs: int, exp_name=None,
 
         device = next(model.parameters()).device
         dtype = next(model.parameters()).dtype
+
+        gen_kwargs = [{"device": device, "dtype": dtype} for _ in gen_fns]
+        for idx, _overwrite_kwargs in enumerate(overwrite_kwargs):
+            gen_kwargs[idx].update(_overwrite_kwargs)
+
         batches = []
 
         gen_model = model
@@ -117,10 +138,10 @@ def predict(model, weight_dir, outpath: str, num_epochs: int, exp_name=None,
 
         with torch.no_grad():
             for i in tqdm(range(num_batches)):
-                generative_network = model
-                preds = gen_model(torch.randn(batchsize, latent_dim,
-                                              device=device,
-                                              dtype=dtype))
+                args = []
+                for _fn, _args, _kwargs in zip(gen_fns, gen_args, gen_kwargs):
+                    args.append(_fn(*_args, **_kwargs))
+                preds = gen_model(*args)
                 batches.append(preds.to("cpu"))
 
         proc = Process(target=save_data, args=(batches, img_save_path))
