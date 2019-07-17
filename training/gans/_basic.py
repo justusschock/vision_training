@@ -7,6 +7,7 @@ from torchvision.utils import save_image
 import os
 from tqdm import tqdm
 from deliravision.losses import AdversarialLoss
+from batchgenerators.transforms import ZeroMeanUnitVarianceTransform
 
 
 def create_optims(model, optim_cls,
@@ -74,7 +75,9 @@ def train(model_cls, model_kwargs: dict, outpath: str, data_path, exp_name=None,
             "scheduler_params": {}
         }
     })
-    data = setup_data(data_path, params.nested_get("batchsize"), 4, None, None,
+    data = setup_data(data_path, params.nested_get("batchsize"), 4,
+                      ZeroMeanUnitVarianceTransform(),
+                      ZeroMeanUnitVarianceTransform(),
                       dset_type)
     exp = PyTorchExperiment(params, model_cls,
                             params.nested_get("num_epochs"),
