@@ -6,8 +6,8 @@ from training.gans._basic import train, predict
 
 if __name__ == '__main__':
 
-    img_path = "~/data/"
-    outpath = "~/GanExperiments"
+    img_path = os.path.abspath("~/data/")
+    outpath = os.path.abspath("~/GanExperiments")
     num_epochs = 1000
     key_mapping = {"x": "data", "labels": "label"}
     batchsize = 64,

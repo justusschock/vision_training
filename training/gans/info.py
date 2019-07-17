@@ -38,8 +38,8 @@ def onehot_ints(max_val, shape, device, dtype):
 
 if __name__ == '__main__':
 
-    img_path = "~/data/"
-    outpath = "~/GanExperiments"
+    img_path = os.path.abspath("~/data/")
+    outpath = os.path.abspath("~/GanExperiments")
     num_epochs = 1000
     key_mapping = {"imgs": "data"}
     batchsize = 64
