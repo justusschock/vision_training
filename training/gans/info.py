@@ -71,4 +71,4 @@ if __name__ == '__main__':
             gen_args=[(batchsize, latent_dim),
                       (n_classes, (batchsize, 1)),
                       ((batchsize, code_dim),)],
-            gen_kwargs=[{}, {"dtype": torch.long}, {}])
+            gen_kwargs=[{}, {"dtype": torch.long}, {"min_val": -1, "max_val": 1}])

@@ -10,8 +10,8 @@ if __name__ == '__main__':
     outpath = os.path.abspath("~/GanExperiments")
     num_epochs = 1000
     key_mapping = {"x": "data", "labels": "label"}
-    batchsize = 64,
-    latent_dim = 100,
+    batchsize = 64
+    latent_dim = 100
     n_classes = 10
 
     model, weight_path = train(ConditionalGAN, {"latent_dim": latent_dim,
