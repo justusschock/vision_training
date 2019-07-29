@@ -21,6 +21,7 @@ def create_optims(model, optim_cls,
 def setup_data(img_path, batchsize, num_processes, transforms_train,
                transforms_val, dset_type="mnist"):
     print("Setting Up Data")
+    img_path = os.path.expanduser(img_path)
     data = {}
     for train, key, trafo, sampler_cls in zip([True, False], ["train", "val"],
                                               [transforms_train,
@@ -58,6 +59,9 @@ def train(model_cls, model_kwargs: dict, outpath: str, data_path, exp_name=None,
 
     if create_optim_fn is None:
         create_optim_fn = create_optims
+    
+    outpath = os.path.expanduser(outpath)
+        
     losses = {"adversarial": AdversarialLoss()}
     losses.update(additional_losses)
     params = Parameters(fixed_params={
@@ -111,6 +115,9 @@ def predict(model, weight_dir, outpath: str, num_epochs: int, exp_name=None,
 
     if exp_name is None:
         exp_name = model.__class__.__name__
+        
+    weight_dir = os.path.expanduser(weight_dir)
+    outpath = os.path.expanduser(outpath)
 
     pbar = tqdm(range(0, num_epochs, checkpoint_freq))
     processes = []
